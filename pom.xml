@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.xocialive</groupId>
     <artifactId>AccuBook</artifactId>
@@ -101,6 +101,13 @@
             <artifactId>spring-aop</artifactId>
             <version>6.1.12</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.7.2</version>
+        </dependency>
+
         <!--    Security    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

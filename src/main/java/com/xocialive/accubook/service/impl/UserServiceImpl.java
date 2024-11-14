@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDTO(updatedUser);
     }
 
-
     @Override
     public Optional<UserDTO> getUserById(Long id) {
         return userRepo.findById(id)

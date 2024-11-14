@@ -1,5 +1,6 @@
 package com.xocialive.accubook.model.entity;
 
+import com.xocialive.accubook.model.enums.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -39,11 +40,14 @@ public class Transaction {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionType type;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
 }

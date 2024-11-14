@@ -13,5 +13,4 @@ public interface TransactionMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "client", ignore = true)
     Transaction toTransaction(TransactionCreateDTO transactionCreateDTO);
-
 }

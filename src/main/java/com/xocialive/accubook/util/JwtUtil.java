@@ -31,7 +31,7 @@ public class JwtUtil {
 
     private Key getSigningKey() {
 
-        String SECRET_KEY = "";
+        String SECRET_KEY = "dksladjskadj3weuuqiewudhSDASADSDD3QW43243QWQR324R324432FSDSDFDSFASFASD";
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }

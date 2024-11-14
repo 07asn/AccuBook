@@ -1,5 +1,6 @@
 package com.xocialive.accubook.model.dto.transaction;
 
+import com.xocialive.accubook.model.enums.TransactionType;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -15,4 +16,6 @@ public class TransactionUpdateDTO {
     private String description;
 
     private LocalDateTime transactionDate;
+
+    private TransactionType type;
 }

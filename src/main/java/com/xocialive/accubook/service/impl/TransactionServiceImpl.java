@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepo transactionRepository;
+    private final TransactionRepo transactionRepo;
     private final ClientRepo clientRepo;
     private final TransactionMapper transactionMapper;
 
@@ -36,39 +37,59 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setClient(client);
         transaction.setTransactionDate(getCurrentOrProvidedDate(transaction.getTransactionDate()));
 
-        Transaction savedTransaction = transactionRepository.save(transaction);
+        Transaction savedTransaction = transactionRepo.save(transaction);
         return transactionMapper.toTransactionDTO(savedTransaction);
     }
 
     @Override
     public TransactionDTO update(Long id, TransactionUpdateDTO transactionUpdateDTO) {
-        return transactionRepository.findById(id)
+        return transactionRepo.findById(id)
                 .map(existingTransaction -> {
                     updateTransactionFields(existingTransaction, transactionUpdateDTO);
-                    return transactionMapper.toTransactionDTO(transactionRepository.save(existingTransaction));
+                    return transactionMapper.toTransactionDTO(transactionRepo.save(existingTransaction));
                 })
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
     }
 
     @Override
     public void delete(Long id) {
-        if (!transactionRepository.existsById(id)) {
+        if (!transactionRepo.existsById(id)) {
             throw new RuntimeException("Transaction not found");
         }
-        transactionRepository.deleteById(id);
+        transactionRepo.deleteById(id);
     }
 
     @Override
     public Optional<TransactionDTO> getTransactionById(Long id) {
-        return transactionRepository.findById(id)
+        return transactionRepo.findById(id)
                 .map(transactionMapper::toTransactionDTO);
     }
 
     @Override
     public List<TransactionDTO> getTransactionsByClientId(Long clientId) {
-        return transactionRepository.findByClientId(clientId).stream()
+        return transactionRepo.findByClientId(clientId).stream()
                 .map(transactionMapper::toTransactionDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BigDecimal getTotalReceivedByClient(Long clientId) {
+        return transactionRepo.sumMoneyReceivedByClient(clientId);
+    }
+
+    @Override
+    public BigDecimal getTotalBorrowedByClient(Long clientId) {
+        return transactionRepo.sumMoneyBorrowedByClient(clientId);
+    }
+
+    @Override
+    public BigDecimal getTotalReceivedByAllClients(Long userId) {
+        return transactionRepo.sumMoneyReceivedByAllClients(userId);
+    }
+
+    @Override
+    public BigDecimal getTotalBorrowedByAllClients(Long userId) {
+        return transactionRepo.sumMoneyBorrowedByAllClients(userId);
     }
 
     private LocalDateTime getCurrentOrProvidedDate(LocalDateTime providedDate) {

@@ -1,5 +1,6 @@
 package com.xocialive.accubook.model.dto.transaction;
 
+import com.xocialive.accubook.model.enums.TransactionType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -16,6 +17,9 @@ public class TransactionCreateDTO {
     private String description;
 
     private Long clientId;
+
+    @NotNull(message = "Transaction type is mandatory")
+    private TransactionType type;
 
     @NotNull(message = "Date is mandatory")
     private LocalDateTime transactionDate;
